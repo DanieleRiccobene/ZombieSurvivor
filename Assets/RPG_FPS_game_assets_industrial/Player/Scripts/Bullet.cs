@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+
+    public int damageAmount = 20;
     private Rigidbody bulletRigidBody;
 
     private void Awake()
@@ -15,18 +17,15 @@ public class Bullet : MonoBehaviour
     {
         float speed = 50f;
         bulletRigidBody.velocity = transform.forward * speed;
+        Destroy(this.gameObject, 2f);
     }
 
     private void OnTriggerEnter (Collider other)
     {
-        if(other.GetComponent<BulletTarget>() != null)
+        if(other.gameObject.tag == "Zombie")
         {
-            //hit the target
+            Destroy(this.gameObject);
+            other.GetComponent<EnemyDamage>().TakeDamage(damageAmount);
         }
-        else
-        {
-            //hit other object
-        }
-        Destroy(this.gameObject);
     }
 }

@@ -4,5 +4,15 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Menu/Menu.unity
+    guid: 6789883b42a7e1a489213d33980e3138
+  - enabled: 1
+    path: Assets/RPG_FPS_game_assets_industrial/Map_v1.unity
+    guid: 5a463281e6e238742a45430f11e82829
+  - enabled: 1
+    path: Assets/Menu/Credits.unity
+    guid: 2d14397caa96a3f44af4eb6e60158e92
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

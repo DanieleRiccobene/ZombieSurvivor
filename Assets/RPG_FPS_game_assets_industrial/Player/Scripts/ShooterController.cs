@@ -15,6 +15,7 @@ public class ShooterController: MonoBehaviour
     [SerializeField] private Transform projectilePrefab;
     [SerializeField] private Transform spawnBulletPosition;
     [SerializeField] private Canvas cross;
+    public AudioClip gunFire;
 
     private ThirdPersonController thirdPersonController;
     private StarterAssetsInputs starterAssetsInput;
@@ -46,6 +47,15 @@ public class ShooterController: MonoBehaviour
             cross.gameObject.SetActive(true);
             thirdPersonController.SetSensitivity(normalSensitivity);
             thirdPersonController.SetRotateOnMove(false);
+            starterAssetsInput.sprint = false;
+            if (starterAssetsInput.move != Vector2.zero)
+            {
+                animator.SetBool("WalkPistol", true);
+            }
+            else
+            {
+                animator.SetBool("WalkPistol", false);
+            }
             animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));// per un'animazione più morbida
 
             Vector3 worldAimTarget = mouseWorldPosition;
@@ -53,11 +63,12 @@ public class ShooterController: MonoBehaviour
             Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
             transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
 
-            if (starterAssetsInput.shoot)
+            if (starterAssetsInput.aim && starterAssetsInput.shoot)
             {
                 Vector3 aimDir = (mouseWorldPosition - spawnBulletPosition.position).normalized;
                 Instantiate(projectilePrefab, spawnBulletPosition.position, Quaternion.LookRotation(aimDir, Vector3.up));
                 starterAssetsInput.shoot = false;
+                SoundManager.Instance.Play(gunFire);
             }
         }
         else
