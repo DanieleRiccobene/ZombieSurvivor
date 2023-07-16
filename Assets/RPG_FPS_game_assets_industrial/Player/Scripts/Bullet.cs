@@ -10,19 +10,19 @@ public class Bullet : MonoBehaviour
 
     private void Awake()
     {
-        bulletRigidBody = GetComponent<Rigidbody>();   
+        bulletRigidBody = GetComponent<Rigidbody>();
     }
 
     private void Start()
     {
-        float speed = 50f;
+        float speed = 100f;
         bulletRigidBody.velocity = transform.forward * speed;
         Destroy(this.gameObject, 2f);
     }
 
-    private void OnTriggerEnter (Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Zombie")
+        if (other.gameObject.tag == "Zombie")
         {
             Destroy(this.gameObject);
             other.GetComponent<EnemyDamage>().TakeDamage(damageAmount);

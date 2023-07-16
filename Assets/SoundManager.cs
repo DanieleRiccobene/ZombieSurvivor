@@ -1,7 +1,6 @@
 using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -67,6 +66,7 @@ public class SoundManager : MonoBehaviour
         float effectVolume = effectSlider.value;
         float playerEffect = effectSlider.value;
         PlayerPrefs.SetFloat("EffectValue", effectVolume);
+        PlayerPrefs.SetFloat("PlayerEffect", playerEffect);
         player.FootstepAudioVolume = effectVolume;
         LoadEffectVolume(); 
     }

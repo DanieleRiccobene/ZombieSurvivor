@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 3071279177898476739}
   - component: {fileID: 981785835770005563}
   - component: {fileID: 6583185423999823028}
-  - component: {fileID: 61814240266778215}
+  - component: {fileID: 262919715592862663}
+  - component: {fileID: 4961181769814686066}
   m_Layer: 0
   m_Name: projectile
   m_TagString: Bullet
@@ -83,7 +84,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.023453198, y: 0.02478351, z: 0.20476657}
   m_Center: {x: -0.00035361713, y: -0.00029105134, z: -0.00019748509}
---- !u!114 &61814240266778215
+--- !u!114 &262919715592862663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4164906182713827204}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9797ebdd528a92439c6239c05a27734, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageAmount: 20
+--- !u!114 &4961181769814686066
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

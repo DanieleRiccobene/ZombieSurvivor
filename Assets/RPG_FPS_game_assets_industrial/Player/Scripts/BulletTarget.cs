@@ -11,6 +11,5 @@ public class BulletTarget : MonoBehaviour
         {
             CoinManager.instance.AddCoins(10);
         }
-        
     }
 }

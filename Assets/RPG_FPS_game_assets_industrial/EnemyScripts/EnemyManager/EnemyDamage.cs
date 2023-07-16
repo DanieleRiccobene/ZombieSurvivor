@@ -5,13 +5,16 @@ using UnityEngine.UI;
 
 public class EnemyDamage : MonoBehaviour
 {
+    private int round;
     private int HP = 100;
     public Slider healtbar;
     public Animator animator;
     private Enemy enemy;
+    
 
     private void Start()
     {
+        round = GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>().round;
         enemy = GetComponent<Enemy>();
     }
 
@@ -22,12 +25,16 @@ public class EnemyDamage : MonoBehaviour
 
     public void TakeDamage(int damageAmount)
     {
-        HP = HP - damageAmount;
+        if (round == 1) HP -= damageAmount;
+        else if(round==2) HP -= damageAmount/2;
+        else if(round==3) HP -= damageAmount/4;
 
-        if(HP == 0)
+
+        if (HP == 0)
         {
             enemy.notFollow();
             animator.SetTrigger("die");
+            GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>().reduceZombiesLeft();
             Destroy(GetComponent<ZombieBehavior>());
             StartCoroutine(DestroyEnemy());
         }
@@ -36,7 +43,7 @@ public class EnemyDamage : MonoBehaviour
     IEnumerator DestroyEnemy()
     {
         yield return new WaitForSeconds(4);
-        
+
         Destroy(this.gameObject);
     }
 }

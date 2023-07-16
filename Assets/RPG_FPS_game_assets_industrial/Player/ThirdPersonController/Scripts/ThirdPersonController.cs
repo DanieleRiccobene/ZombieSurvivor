@@ -31,7 +31,7 @@ namespace StarterAssets
         public float SpeedChangeRate = 10.0f;
         public float sensitivity = 1.0f;
 
-        public AudioClip LandingAudioClip;  
+        public AudioClip LandingAudioClip;
         public AudioClip[] FootstepAudioClips;
         [Range(0, 1)] public float FootstepAudioVolume = 0.5f;
 
@@ -78,6 +78,7 @@ namespace StarterAssets
         [Tooltip("For locking the camera position on all axis")]
         public bool LockCameraPosition = false;
 
+        public BoxCollider boxcolliderPlayer;
         // cinemachine
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
@@ -136,16 +137,17 @@ namespace StarterAssets
             if (_mainCamera == null)
             {
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-                
+
             }
         }
 
         private void Start()
         {
+            Time.timeScale = 1f;
             currentHealth = maxHealth;
             healthBar.SetMaxHealth(maxHealth);
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
-            
+
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
@@ -162,7 +164,7 @@ namespace StarterAssets
             _fallTimeoutDelta = FallTimeout;
         }
 
-       
+
 
         private void Update()
         {
@@ -273,11 +275,11 @@ namespace StarterAssets
                     RotationSmoothTime);
 
                 // rotate to face input direction relative to camera position
-                if (_rotateOnMove) 
+                if (_rotateOnMove)
                 {
                     transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
                 }
-                
+
             }
 
 
@@ -373,7 +375,7 @@ namespace StarterAssets
 
         public void SetSensitivity(float newSensitivity)
         {
-            sensitivity = newSensitivity;   
+            sensitivity = newSensitivity;
         }
 
         public void SetRotateOnMove(bool newRotateOnMove)
@@ -429,12 +431,42 @@ namespace StarterAssets
             healthBar.SetHealth(currentHealth);
         }
 
-        public void OnTriggerEnter(Collider other)
+        bool triggerEntered = false;
+
+        public void Die()
         {
-            if(other.gameObject.tag == "Zombie")
+            _playerInput.enabled = false;
+            StopAllCoroutines();
+            //GameObject.FindGameObjectWithTag("Zombie").GetComponent<ZombieBehavior>().StopAllCoroutines();
+            boxcolliderPlayer.enabled = false;
+            _animator.SetTrigger("isDead");
+        }
+
+        IEnumerator OnTriggerEnter(Collider col)
+        {
+            if (col.CompareTag("Zombie"))
             {
-                TakeDamage(10);
+                triggerEntered = true;
+
+                //Decrease while triggerEntered is true
+                while (triggerEntered)
+                {
+                    TakeDamage(5);
+                    yield return new WaitForSeconds(1);
+
+                    //Exit if we hit the min value?
+                    if (currentHealth <= 0)
+                    {
+                        Die();
+                        yield break;
+                    }
+                }
             }
+        }
+        IEnumerator OnTriggerExit(Collider col)
+        {
+            triggerEntered = false;
+            yield return null;
         }
     }
 }

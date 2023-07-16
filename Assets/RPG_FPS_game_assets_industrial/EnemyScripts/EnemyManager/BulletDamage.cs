@@ -13,8 +13,6 @@ public class BulletDamage : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Bullet hit " + other.name);
-
         Destroy(transform.GetComponent<Rigidbody>());
         
         if(other.tag == "Zombie")

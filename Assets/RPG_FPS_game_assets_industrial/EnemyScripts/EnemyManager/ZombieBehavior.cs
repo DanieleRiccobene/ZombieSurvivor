@@ -1,6 +1,7 @@
 using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,11 +11,14 @@ public class ZombieBehavior : MonoBehaviour
     public float chaseSpeed = 6f; // Velocit� di inseguimento degli zombie
     public float chaseDistance = 10f; // Distanza di rilevamento del giocatore
     public float attackDistance = 2f; //Distance di attacco dello zombie
+    public int damage = 5;
 
-    private Transform player; // Riferimento al trasform del giocatore
     public bool isChasing = false; // Flag per indicare se lo zombie sta inseguendo il giocatore
     private bool isAttacking = false; //Flag per indicare se lo zombie sta attaccando
     private Vector3 randomDirection; // Direzione casuale di movimento
+    private HealthBar healthBar;
+    private GameObject playerController;
+    private Transform player;
 
     private Animator animator;
 
@@ -25,9 +29,8 @@ public class ZombieBehavior : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform; // Trova il giocatore tramite il tag "Player"
-        //randomDirection = GetRandomDirection(); // Ottieni una direzione casuale all'inizio
         // Avvia le coroutine
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         StartCoroutine(ZombieMovementCoroutine());
         StartCoroutine(PlayerDetectionCoroutine());
     }
@@ -39,9 +42,7 @@ public class ZombieBehavior : MonoBehaviour
             if (isChasing)
             {
                 // Se lo zombie sta inseguendo il giocatore, muoviti verso di lui
-                /*Vector3 chaseDirection = (player.position - transform.position).normalized;
-                transform.position += chaseDirection * chaseSpeed * Time.deltaTime;
-                transform.LookAt(player.transform.position);*/
+                
                 animator.SetBool("isRunning", true);
                 animator.SetBool("isWalking", false);
                 animator.SetBool("isAttacking", false);
@@ -54,12 +55,23 @@ public class ZombieBehavior : MonoBehaviour
             else
             {
                 // Se lo zombie non sta inseguendo il giocatore, muoviti in modo casuale
-                //transform.position += randomDirection * moveSpeed * Time.deltaTime;
                 animator.SetBool("isWalking", true);
                 animator.SetBool("isRunning", false);
             }
 
             yield return null;
+        }
+    }
+
+    public bool OnAttack()
+    {
+        if (isAttacking)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -89,11 +101,5 @@ public class ZombieBehavior : MonoBehaviour
             yield return null;
         }
     }
-
-    /*private Vector3 GetRandomDirection()
-    {
-        // Genera una direzione casuale tridimensionale
-        Vector3 randomDir = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
-        return randomDir;
-    }*/
+    
 }
